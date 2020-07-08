@@ -25,11 +25,11 @@ class AuthProvider with ChangeNotifier {
   User get user => _user;
   String get token => _token;
   bool get loggedIn => _token.isNotEmpty ? true : false;
+  String get fullName => _user != null ? _user.fullName : "Guest";
 
   // Mutations
-  setUser(user) {
+  void setUser(Map<String, dynamic> user) {
     this._user = User.fromJson(user);
-    print(this._user.firstName);
     notifyListeners();
   }
 
@@ -94,6 +94,7 @@ class AuthProvider with ChangeNotifier {
   Future<void> deleteToken() async {
     final SharedPreferences prefs = await _prefs;
     _token = "";
+    _user = null;
     prefs.remove('auth.token');
     notifyListeners();
   }

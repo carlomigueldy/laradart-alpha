@@ -1,3 +1,4 @@
+import 'package:daycare_flutter/providers/auth_provider.dart';
 import 'package:daycare_flutter/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +12,8 @@ class UsersScreen extends StatelessWidget {
     // the listen property to false
     final UserProvider userProvider =
         Provider.of<UserProvider>(context, listen: false);
+    final AuthProvider authProvider =
+        Provider.of<AuthProvider>(context, listen: false);
 
     return Scaffold(
         appBar: AppBar(
@@ -24,7 +27,8 @@ class UsersScreen extends StatelessWidget {
                   child: Column(
                 children: <Widget>[
                   Text('Users Screen'),
-                  Text(userProvider.token)
+                  Text(userProvider.token),
+                  Text(authProvider.fullName)
                 ],
               )),
             ),
