@@ -1,5 +1,8 @@
+import 'package:daycare_flutter/models/user.dart';
 import 'package:daycare_flutter/providers/auth_provider.dart';
+import 'package:daycare_flutter/providers/user_provider.dart';
 import 'package:daycare_flutter/screens/home_screen.dart';
+import 'package:daycare_flutter/screens/users_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,7 +16,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<AuthProvider>.value(value: AuthProvider())
+        ChangeNotifierProvider<AuthProvider>.value(value: AuthProvider()),
+        ChangeNotifierProxyProvider<AuthProvider, UserProvider>(
+          create: (context) => UserProvider(),
+          update: (context, value, previous) => UserProvider(
+              token: value.token, users: previous == null ? [] : previous),
+        )
       ],
       child: MaterialApp(
           title: 'Flutter Demo',
@@ -21,7 +29,10 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blue,
             visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
-          routes: {'/': (context) => HomeScreen()}),
+          routes: {
+            HomeScreen.routeName: (context) => HomeScreen(),
+            UsersScreen.routeName: (context) => UsersScreen()
+          }),
     );
   }
 }
