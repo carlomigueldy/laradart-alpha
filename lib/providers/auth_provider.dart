@@ -34,41 +34,52 @@ class AuthProvider with ChangeNotifier {
   }
 
   /// Attempts to sign in to API
-  Future login(Map<String, String> credentials) async {
+  Future<int> login(Map<String, String> credentials) async {
     try {
       Response response = await _dio.post('${Config.baseUrl}/api/auth/login',
           data: credentials);
       String token = response.data['access_token'];
       setToken(token);
       fetchUser(token);
-      return response;
+      return response.statusCode;
     } on DioError catch (error) {
       print(error);
+      return error.response.statusCode;
     }
   }
 
   /// Logs out the user
-  Future logout() async {
+  Future<int> logout() async {
     try {
       Response response = await _dio.get('${Config.baseUrl}/api/auth/logout',
           options: Options(headers: {"Authorization": "Bearer $_token"}));
       deleteToken();
-      return response;
+      return response.statusCode;
     } on DioError catch (error) {
       print(error);
+      return error.response.statusCode;
     }
   }
 
   /// Fetch the authenticated user
-  Future<void> fetchUser(String token) async {
+  Future<int> fetchUser(String token) async {
     try {
       Response response = await _dio.get('${Config.baseUrl}/api/auth/user',
           options:
               Options(headers: {"Authorization": "Bearer ${token ?? _token}"}));
       setUser(response.data);
+      return response.statusCode;
     } on DioError catch (error) {
       print(error.response.statusCode);
+      return error.response.statusCode;
     }
+  }
+
+  /// Get the auth token
+  Future<void> getToken() async {
+    final SharedPreferences prefs = await _prefs;
+    _token = prefs.getString('auth.token') ?? "";
+    notifyListeners();
   }
 
   /// Set the auth token

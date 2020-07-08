@@ -76,8 +76,24 @@ class LogoutButton extends StatelessWidget {
       height: 50,
       child: RaisedButton(
         onPressed: () async {
-          Response response = await authProvider.logout();
-          print(response);
+          int statusCode = await authProvider.logout();
+
+          if (statusCode == 403) {
+            showDialog(
+              context: context,
+              builder: (_) => AlertDialog(
+                title: Text('Error'),
+                content: Text('Oops'),
+                contentPadding: EdgeInsets.all(30),
+                actions: <Widget>[
+                  FlatButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text('Close'),
+                  )
+                ],
+              ),
+            );
+          }
         },
         child: Text('Logout'),
       ),
