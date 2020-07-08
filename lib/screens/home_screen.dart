@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final AuthService authService = AuthService();
     final AuthProvider authProvider = Provider.of<AuthProvider>(context);
 
     return Scaffold(
@@ -22,7 +21,7 @@ class HomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              LoginButton(authService: authService),
+              LoginButton(authProvider: authProvider),
               SizedBox(
                 height: 10.0,
               ),
@@ -43,10 +42,10 @@ class HomeScreen extends StatelessWidget {
 class LoginButton extends StatelessWidget {
   const LoginButton({
     Key key,
-    @required this.authService,
+    @required this.authProvider,
   }) : super(key: key);
 
-  final AuthService authService;
+  final AuthProvider authProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -54,11 +53,8 @@ class LoginButton extends StatelessWidget {
       height: 50,
       child: RaisedButton(
           onPressed: () async {
-            await authService
+            await authProvider
                 .login({"email": "admin@admin.com", "password": "password"});
-
-            Response response = await authService.getUser();
-            print(response.statusCode);
           },
           child: Text('Click Me')),
     );
