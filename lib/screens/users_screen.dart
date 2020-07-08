@@ -16,7 +16,7 @@ class UsersScreen extends StatelessWidget {
         ),
         body: SafeArea(
           child: Center(
-            child: Text(userProvider.token),
+            child: Text('Users Screen'),
           ),
         ));
   }

@@ -18,9 +18,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<AuthProvider>.value(value: AuthProvider()),
         ChangeNotifierProxyProvider<AuthProvider, UserProvider>(
-          create: (context) => UserProvider(),
-          update: (context, value, previous) => UserProvider(
-              token: value.token, users: previous == null ? [] : previous),
+          create: (_) => UserProvider(),
+          update: (context, auth, previous) =>
+              UserProvider(authProvider: auth, users: previous.users),
         )
       ],
       child: MaterialApp(

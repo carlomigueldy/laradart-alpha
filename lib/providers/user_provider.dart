@@ -1,11 +1,12 @@
+import 'package:daycare_flutter/providers/auth_provider.dart';
 import 'package:flutter/foundation.dart';
 
 class UserProvider with ChangeNotifier {
-  final String token;
+  final AuthProvider authProvider;
   List<dynamic> users = [];
 
   UserProvider({
-    this.token,
+    this.authProvider,
     this.users,
   });
 }

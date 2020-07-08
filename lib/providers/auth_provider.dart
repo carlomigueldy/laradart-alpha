@@ -22,7 +22,7 @@ class AuthProvider with ChangeNotifier {
   String get token => _token;
 
   /// Checks if user is logged
-  get loggedIn => _token != null ? true : false;
+  get loggedIn => _token.isNotEmpty ? true : false;
 
   setUser(user) {
     this._user = AuthenticatedUser.fromJson(user);
@@ -37,7 +37,7 @@ class AuthProvider with ChangeNotifier {
           data: credentials);
 
       setToken(response.data['access_token']);
-
+      fetchUser();
       return response;
     } on DioError catch (error) {
       print(error);
@@ -55,12 +55,12 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future getUser() async {
+  /// Fetch the authenticated user
+  Future<void> fetchUser() async {
     try {
-      Response response = await _dio.get('${Config.baseUrl}/api/auth/user');
+      Response response = await _dio.get('${Config.baseUrl}/api/auth/user',
+          options: Options(headers: {"Authorization": "Bearer $_token"}));
       setUser(response.data);
-      print('== getUser ==');
-      return response;
     } on DioError catch (error) {
       print(error.response.statusCode);
     }
@@ -77,7 +77,7 @@ class AuthProvider with ChangeNotifier {
   /// Remove the auth token
   Future<void> deleteToken() async {
     final SharedPreferences prefs = await _prefs;
-    _token = null;
+    _token = "";
     prefs.remove('auth.token');
     notifyListeners();
   }
