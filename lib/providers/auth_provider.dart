@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthProvider extends ChangeNotifier {
+class AuthProvider with ChangeNotifier {
   static Dio _dio;
 
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -27,7 +27,7 @@ class AuthProvider extends ChangeNotifier {
   }
 
   /// Checks if user is logged
-  get loggedIn => _token.isNotEmpty;
+  get loggedIn => _token != null ? true : false;
 
   setUser(user) {
     this._user = AuthenticatedUser.fromJson(user);
@@ -43,6 +43,17 @@ class AuthProvider extends ChangeNotifier {
 
       setToken(response.data['access_token']);
 
+      return response;
+    } on DioError catch (error) {
+      print(error);
+    }
+  }
+
+  Future logout() async {
+    try {
+      Response response = await _dio.get('${Config.baseUrl}/api/auth/logout',
+          options: Options(headers: {"Authorization": "Bearer $_token"}));
+      deleteToken();
       return response;
     } on DioError catch (error) {
       print(error);

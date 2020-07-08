@@ -1,5 +1,4 @@
 import 'package:daycare_flutter/providers/auth_provider.dart';
-import 'package:daycare_flutter/services/auth_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,17 +24,57 @@ class HomeScreen extends StatelessWidget {
               SizedBox(
                 height: 10.0,
               ),
-              Container(
-                height: 50,
-                child: RaisedButton(
-                  onPressed: () => print('ayaw lagi'),
-                  child: Text(
-                      authProvider.loggedIn ? 'Naka login man ka' : 'Ayaw'),
-                ),
-              )
+              PrintButton(authProvider: authProvider),
+              SizedBox(
+                height: 10.0,
+              ),
+              LogoutButton(authProvider: authProvider)
             ],
           ),
         )));
+  }
+}
+
+class LogoutButton extends StatelessWidget {
+  const LogoutButton({
+    Key key,
+    @required this.authProvider,
+  }) : super(key: key);
+
+  final AuthProvider authProvider;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 50,
+      child: RaisedButton(
+        onPressed: () async {
+          Response response = await authProvider.logout();
+          print(response);
+        },
+        child: Text('Logout'),
+      ),
+    );
+  }
+}
+
+class PrintButton extends StatelessWidget {
+  const PrintButton({
+    Key key,
+    @required this.authProvider,
+  }) : super(key: key);
+
+  final AuthProvider authProvider;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 50,
+      child: RaisedButton(
+        onPressed: () => print('ayaw lagi'),
+        child: Text(authProvider.loggedIn ? 'Naka login man ka' : 'Ayaw'),
+      ),
+    );
   }
 }
 
