@@ -7,7 +7,10 @@ class UsersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserProvider userProvider = Provider.of<UserProvider>(context);
+    // A listener is not needed so we set
+    // the listen property to false
+    final UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
 
     return Scaffold(
         appBar: AppBar(
@@ -16,7 +19,15 @@ class UsersScreen extends StatelessWidget {
         ),
         body: SafeArea(
           child: Center(
-            child: Text('Users Screen'),
+            child: Card(
+              child: Container(
+                  child: Column(
+                children: <Widget>[
+                  Text('Users Screen'),
+                  Text(userProvider.token)
+                ],
+              )),
+            ),
           ),
         ));
   }
