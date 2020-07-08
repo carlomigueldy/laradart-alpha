@@ -5,7 +5,14 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider with ChangeNotifier {
-  static Dio _dio;
+  static Dio _dio = Dio(BaseOptions(
+    baseUrl: Config.baseUrl,
+    headers: {
+      "content-type": "application/json",
+    },
+    connectTimeout: 5000,
+    receiveTimeout: 3000,
+  ));
 
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   AuthenticatedUser _user;
@@ -13,18 +20,6 @@ class AuthProvider with ChangeNotifier {
 
   String _token = "";
   String get token => _token;
-
-  AuthProvider() {
-    _dio = Dio(BaseOptions(
-      baseUrl: Config.baseUrl,
-      headers: {
-        "content-type": "application/json",
-        "Authorization": "Bearer $_token"
-      },
-      connectTimeout: 5000,
-      receiveTimeout: 3000,
-    ));
-  }
 
   /// Checks if user is logged
   get loggedIn => _token != null ? true : false;
