@@ -32,9 +32,9 @@ class MyApp extends StatelessWidget {
         builder: (context, auth, _) => MaterialApp(
             title: 'Flutter Demo',
             theme: ThemeData(
-              primarySwatch: Colors.blue,
-              visualDensity: VisualDensity.adaptivePlatformDensity,
-            ),
+                primarySwatch: Colors.blue,
+                visualDensity: VisualDensity.adaptivePlatformDensity,
+                backgroundColor: Colors.grey[900]),
             home: auth.loggedIn
                 ? HomeScreen()
                 : FutureBuilder(
