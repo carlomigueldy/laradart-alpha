@@ -1,8 +1,7 @@
-import 'package:daycare_flutter/models/user.dart';
-import 'package:daycare_flutter/providers/auth_provider.dart';
-import 'package:daycare_flutter/providers/user_provider.dart';
-import 'package:daycare_flutter/screens/home_screen.dart';
-import 'package:daycare_flutter/screens/users_screen.dart';
+import './providers/auth_provider.dart';
+import './providers/user_provider.dart';
+import './screens/home_screen.dart';
+import './screens/users_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

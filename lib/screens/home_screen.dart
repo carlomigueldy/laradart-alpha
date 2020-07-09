@@ -1,5 +1,5 @@
-import 'package:daycare_flutter/providers/auth_provider.dart';
-import 'package:daycare_flutter/screens/users_screen.dart';
+import '../providers/auth_provider.dart';
+import '../screens/users_screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

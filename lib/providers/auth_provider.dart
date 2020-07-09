@@ -1,6 +1,5 @@
-import 'package:daycare_flutter/config/config.dart';
-import 'package:daycare_flutter/models/auth_user.dart';
-import 'package:daycare_flutter/models/user.dart';
+import '../config/config.dart';
+import '../models/user.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
