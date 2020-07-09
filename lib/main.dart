@@ -1,7 +1,13 @@
+// Providers
 import './providers/auth_provider.dart';
 import './providers/user_provider.dart';
+
+// Screens
 import './screens/home_screen.dart';
 import './screens/users_screen.dart';
+import './screens/splash_screen.dart';
+import './screens/login_screen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,16 +28,27 @@ class MyApp extends StatelessWidget {
               UserProvider(token: auth.token, users: previous.users),
         )
       ],
-      child: MaterialApp(
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-          ),
-          routes: {
-            HomeScreen.routeName: (context) => HomeScreen(),
-            UsersScreen.routeName: (context) => UsersScreen()
-          }),
+      child: Consumer<AuthProvider>(
+        builder: (context, auth, _) => MaterialApp(
+            title: 'Flutter Demo',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+            ),
+            home: auth.loggedIn
+                ? HomeScreen()
+                : FutureBuilder(
+                    future: auth.tryAutoLogin(),
+                    builder: (context, snapshot) =>
+                        snapshot.connectionState == ConnectionState.waiting
+                            ? SplashScreen()
+                            : LoginScreen(),
+                  ),
+            routes: {
+              HomeScreen.routeName: (context) => HomeScreen(),
+              UsersScreen.routeName: (context) => UsersScreen()
+            }),
+      ),
     );
   }
 }
