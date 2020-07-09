@@ -34,44 +34,44 @@ class AuthProvider with ChangeNotifier {
   }
 
   /// Attempts to sign in to API
-  Future<int> login(Map<String, String> credentials) async {
+  Future login(Map<String, String> credentials) async {
     try {
       Response response = await _dio.post('${Config.baseUrl}/api/auth/login',
           data: credentials);
       String token = response.data['access_token'];
       setToken(token);
       fetchUser(token);
-      return response.statusCode;
+      return response;
     } on DioError catch (error) {
       print(error);
-      return error.response.statusCode;
+      return error.response;
     }
   }
 
   /// Logs out the user
-  Future<int> logout() async {
+  Future logout() async {
     try {
       Response response = await _dio.get('${Config.baseUrl}/api/auth/logout',
           options: Options(headers: {"Authorization": "Bearer $_token"}));
       deleteToken();
-      return response.statusCode;
+      return response;
     } on DioError catch (error) {
       print(error);
-      return error.response.statusCode;
+      return error.response;
     }
   }
 
   /// Fetch the authenticated user
-  Future<int> fetchUser(String token) async {
+  Future fetchUser(String token) async {
     try {
       Response response = await _dio.get('${Config.baseUrl}/api/auth/user',
           options:
               Options(headers: {"Authorization": "Bearer ${token ?? _token}"}));
       setUser(response.data);
-      return response.statusCode;
+      return response;
     } on DioError catch (error) {
-      print(error.response.statusCode);
-      return error.response.statusCode;
+      print(error.response);
+      return error.response;
     }
   }
 

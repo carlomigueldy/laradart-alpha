@@ -76,23 +76,33 @@ class LogoutButton extends StatelessWidget {
       height: 50,
       child: RaisedButton(
         onPressed: () async {
-          int statusCode = await authProvider.logout();
+          Response response = await authProvider.logout();
 
-          if (statusCode == 403) {
-            showDialog(
-              context: context,
-              builder: (_) => AlertDialog(
-                title: Text('Error'),
-                content: Text('Oops'),
-                contentPadding: EdgeInsets.all(30),
-                actions: <Widget>[
-                  FlatButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: Text('Close'),
-                  )
-                ],
-              ),
-            );
+          switch (response.statusCode) {
+            case 403:
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  title: Text('Error'),
+                  content: Text('Oops'),
+                  contentPadding: EdgeInsets.all(30),
+                  actions: <Widget>[
+                    FlatButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text('Close'),
+                    )
+                  ],
+                ),
+              );
+              break;
+            default:
+              Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text(response.data['message']),
+                action: SnackBarAction(
+                  label: 'Close',
+                  onPressed: () => print('Closed'),
+                ),
+              ));
           }
         },
         child: Text('Logout'),
@@ -135,8 +145,54 @@ class LoginButton extends StatelessWidget {
       height: 50,
       child: RaisedButton(
           onPressed: () async {
-            await authProvider
+            Response response = await authProvider
                 .login({"email": "admin@admin.com", "password": "password"});
+
+            switch (response.statusCode) {
+              case 403:
+                showDialog(
+                  context: context,
+                  builder: (_) => AlertDialog(
+                    title: Text('Error'),
+                    content: Text('Oops'),
+                    contentPadding: EdgeInsets.all(30),
+                    actions: <Widget>[
+                      FlatButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text('Close'),
+                      )
+                    ],
+                  ),
+                );
+                break;
+              case 200:
+                Scaffold.of(context).showSnackBar(SnackBar(
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Colors.indigo,
+                  content: Text(
+                    'You have logged in!',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  action: SnackBarAction(
+                    label: 'Close',
+                    onPressed: () => print('Closed'),
+                  ),
+                ));
+                break;
+              default:
+                Scaffold.of(context).showSnackBar(SnackBar(
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Colors.indigo,
+                  content: Text(
+                    response.data['message'],
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  action: SnackBarAction(
+                    label: 'Close',
+                    onPressed: () => print('Closed'),
+                  ),
+                ));
+            }
           },
           child: Text('Click Me')),
     );
