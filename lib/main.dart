@@ -47,7 +47,9 @@ class MyApp extends StatelessWidget {
                   ),
             routes: {
               HomeScreen.routeName: (context) => HomeScreen(),
-              UsersScreen.routeName: (context) => UsersScreen()
+              UsersScreen.routeName: (context) => UsersScreen(),
+              SplashScreen.routeName: (context) => SplashScreen(),
+              LoginScreen.routeName: (context) => LoginScreen()
             }),
       ),
     );
@@ -60,7 +62,7 @@ class MyApp extends StatelessWidget {
       accentColor: Colors.indigo[100],
       fontFamily: GoogleFonts.poppins().fontFamily,
       brightness: Brightness.dark,
-      appBarTheme: AppBarTheme(color: Colors.grey[900]),
+      appBarTheme: AppBarTheme(color: Colors.grey[850], elevation: 0),
       buttonTheme: ButtonThemeData(
           buttonColor: Colors.indigo[400],
           textTheme: ButtonTextTheme.primary,

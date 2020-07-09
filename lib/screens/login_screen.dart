@@ -11,118 +11,72 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AuthProvider authProvider = Provider.of<AuthProvider>(context);
+    final _emailController = TextEditingController(text: 'admin@admin.com');
+    final _passwordController = TextEditingController(text: 'password');
+    final _formKey = GlobalKey<FormState>();
 
     return Scaffold(
+        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomPadding: false,
         body: SafeArea(
             child: Padding(
-      padding: EdgeInsets.all(10.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          SvgPicture.asset(
-            'assets/illustrations/relaunch_day.svg',
-            height: 275.0,
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          Container(
-              padding: EdgeInsets.only(left: 20.0, right: 20.0),
-              child: LoginButton(authProvider: authProvider)),
-          SizedBox(
-            height: 15,
-          ),
-          Container(
-            padding: EdgeInsets.only(left: 20.0, right: 20.0),
-            height: 50,
-            child: RaisedButton(
-                color: Theme.of(context).accentColor,
-                shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(15.0)),
-                onPressed: () {},
-                child: Text(
-                  'Abort',
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                )),
-          )
-        ],
-      ),
-    )));
-  }
-}
+          padding: EdgeInsets.all(10.0),
+          child: Form(
+            autovalidate: true,
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                SvgPicture.asset(
+                  'assets/illustrations/relaunch_day.svg',
+                  height: 250.0,
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                TextFormField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                        labelText: 'Email Address',
+                        hintText: 'Enter your email address'),
+                    autocorrect: false,
+                    validator: (value) => value.isEmpty
+                        ? 'Must contain an email address.'
+                        : null),
+                TextFormField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                        labelText: 'Password', hintText: 'Enter your passwrd'),
+                    autocorrect: false,
+                    validator: (value) =>
+                        value.isEmpty ? 'Must enter your password.' : null),
+                SizedBox(
+                  height: 15,
+                ),
+                Container(
+                  height: 50,
+                  child: RaisedButton(
+                      child: Text('LOGIN'),
+                      onPressed: () async {
+                        if (_formKey.currentState.validate()) {
+                          Response response = await authProvider.login({
+                            "email": _emailController.text,
+                            "password": _passwordController.text
+                          });
 
-class LoginButton extends StatelessWidget {
-  const LoginButton({
-    Key key,
-    @required this.authProvider,
-  }) : super(key: key);
-
-  final AuthProvider authProvider;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 50,
-      child: RaisedButton(
-          onPressed: () async {
-            await onTapLaunch(context);
-          },
-          child: Text(
-            'Launch',
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          )),
-    );
-  }
-
-  Future onTapLaunch(BuildContext context) async {
-    Response response = await authProvider
-        .login({"email": "admin@admin.com", "password": "password"});
-
-    switch (response.statusCode) {
-      case 403:
-        showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-            title: Text('Error'),
-            content: Text('Oops'),
-            contentPadding: EdgeInsets.all(30),
-            actions: <Widget>[
-              FlatButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text('Close'),
-              )
-            ],
+                          if (response.statusCode == 200) {
+                            Scaffold.of(context).showSnackBar(SnackBar(
+                              content: Text('You have logged in!'),
+                            ));
+                          }
+                        }
+                      }),
+                )
+              ],
+            ),
           ),
-        );
-        break;
-      case 200:
-        Scaffold.of(context).showSnackBar(SnackBar(
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: Colors.indigo,
-          content: Text(
-            'You have logged in!',
-            style: TextStyle(color: Colors.white),
-          ),
-          action: SnackBarAction(
-            label: 'Close',
-            onPressed: () => print('Closed'),
-          ),
-        ));
-        break;
-      default:
-        Scaffold.of(context).showSnackBar(SnackBar(
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: Colors.indigo,
-          content: Text(
-            response.data['message'],
-            style: TextStyle(color: Colors.white),
-          ),
-          action: SnackBarAction(
-            label: 'Close',
-            onPressed: () => print('Closed'),
-          ),
-        ));
-    }
+        )));
   }
 }

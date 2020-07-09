@@ -13,7 +13,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: SafeArea(
         child: Center(
-          child: Text('Loading...'),
+          child: CircularProgressIndicator(),
         ),
       ),
     );

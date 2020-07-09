@@ -17,21 +17,27 @@ class UsersScreen extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('User Screen'),
+          leading: IconButton(
+            onPressed: () => Navigator.of(context).pop(),
+            icon: Icon(Icons.chevron_left),
+            iconSize: 32,
+          ),
+          title: Text(
+            'User Screen',
+          ),
           centerTitle: true,
         ),
         body: SafeArea(
           child: Center(
-            child: Card(
-              child: Container(
-                  child: Column(
-                children: <Widget>[
-                  Text('Users Screen'),
-                  Text(userProvider.token),
-                  Text(authProvider.fullName)
-                ],
-              )),
-            ),
+            child: Container(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text('Users Screen'),
+                Text(authProvider.fullName)
+              ],
+            )),
           ),
         ));
   }
