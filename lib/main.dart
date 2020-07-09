@@ -1,4 +1,6 @@
 // Providers
+import 'package:google_fonts/google_fonts.dart';
+
 import './providers/auth_provider.dart';
 import './providers/user_provider.dart';
 
@@ -31,10 +33,9 @@ class MyApp extends StatelessWidget {
       child: Consumer<AuthProvider>(
         builder: (context, auth, _) => MaterialApp(
             title: 'Flutter Demo',
-            theme: ThemeData(
-                primarySwatch: Colors.blue,
-                visualDensity: VisualDensity.adaptivePlatformDensity,
-                backgroundColor: Colors.grey[900]),
+            themeMode: ThemeMode.dark,
+            theme: ThemeData(),
+            darkTheme: darkTheme(),
             home: auth.loggedIn
                 ? HomeScreen()
                 : FutureBuilder(
@@ -49,6 +50,22 @@ class MyApp extends StatelessWidget {
               UsersScreen.routeName: (context) => UsersScreen()
             }),
       ),
+    );
+  }
+
+  ThemeData darkTheme() {
+    return ThemeData(
+      backgroundColor: Colors.grey[900],
+      primaryColor: Colors.indigo[400],
+      accentColor: Colors.indigo[100],
+      fontFamily: GoogleFonts.poppins().fontFamily,
+      brightness: Brightness.dark,
+      appBarTheme: AppBarTheme(color: Colors.grey[900]),
+      buttonTheme: ButtonThemeData(
+          buttonColor: Colors.indigo[400],
+          textTheme: ButtonTextTheme.primary,
+          shape: RoundedRectangleBorder(
+              borderRadius: new BorderRadius.circular(15.0))),
     );
   }
 }

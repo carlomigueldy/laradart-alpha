@@ -13,27 +13,42 @@ class LoginScreen extends StatelessWidget {
     final AuthProvider authProvider = Provider.of<AuthProvider>(context);
 
     return Scaffold(
-        backgroundColor: Colors.grey[900],
         body: SafeArea(
             child: Padding(
-          padding: EdgeInsets.all(10.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              SvgPicture.asset(
-                'assets/illustrations/relaunch_day.svg',
-                height: 275.0,
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Container(
-                  padding: EdgeInsets.only(left: 20.0, right: 20.0),
-                  child: LoginButton(authProvider: authProvider)),
-            ],
+      padding: EdgeInsets.all(10.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          SvgPicture.asset(
+            'assets/illustrations/relaunch_day.svg',
+            height: 275.0,
           ),
-        )));
+          SizedBox(
+            height: 15,
+          ),
+          Container(
+              padding: EdgeInsets.only(left: 20.0, right: 20.0),
+              child: LoginButton(authProvider: authProvider)),
+          SizedBox(
+            height: 15,
+          ),
+          Container(
+            padding: EdgeInsets.only(left: 20.0, right: 20.0),
+            height: 50,
+            child: RaisedButton(
+                color: Theme.of(context).accentColor,
+                shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(15.0)),
+                onPressed: () {},
+                child: Text(
+                  'Abort',
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                )),
+          )
+        ],
+      ),
+    )));
   }
 }
 
@@ -50,9 +65,6 @@ class LoginButton extends StatelessWidget {
     return Container(
       height: 50,
       child: RaisedButton(
-          color: Colors.indigo[400],
-          shape: RoundedRectangleBorder(
-              borderRadius: new BorderRadius.circular(15.0)),
           onPressed: () async {
             await onTapLaunch(context);
           },
