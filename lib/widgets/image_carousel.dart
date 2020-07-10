@@ -1,3 +1,4 @@
+import 'package:daycare_flutter/screens/place_screen.dart';
 import 'package:flutter/material.dart';
 
 class ImageCarousel extends StatelessWidget {
@@ -18,15 +19,23 @@ class ImageCarousel extends StatelessWidget {
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: places.length,
-        itemBuilder: (context, index) => Container(
-          width: 100,
-          margin: EdgeInsets.symmetric(horizontal: 5),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0)),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Image.asset(
-              places[index],
-              fit: BoxFit.cover,
+        itemBuilder: (context, index) => GestureDetector(
+          onTap: () => Navigator.of(context)
+              .pushNamed(PlaceScreen.routeName, arguments: places[index]),
+          child: Container(
+            width: 100,
+            margin: EdgeInsets.symmetric(horizontal: 5),
+            decoration:
+                BoxDecoration(borderRadius: BorderRadius.circular(10.0)),
+            child: Hero(
+              tag: places[index],
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.asset(
+                  places[index],
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
           ),
         ),

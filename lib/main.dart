@@ -9,6 +9,7 @@ import './providers/auth_provider.dart';
 import './providers/user_provider.dart';
 
 // Screens
+import './screens/place_screen.dart';
 import './screens/home_screen.dart';
 import './screens/user_detail_screen.dart';
 import './screens/users_screen.dart';
@@ -40,6 +41,9 @@ class MyApp extends StatelessWidget {
                 return MaterialPageRoute(builder: (_) => HomeScreen());
               case UserListScreen.routeName:
                 return MaterialPageRoute(builder: (_) => UserListScreen());
+              case PlaceScreen.routeName:
+                return MaterialPageRoute(
+                    builder: (_) => PlaceScreen(arguments));
               case UserDetailScreen.routeName:
                 return MaterialPageRoute(
                     builder: (_) => UserDetailScreen(arguments));
