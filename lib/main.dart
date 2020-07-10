@@ -11,6 +11,7 @@ import './screens/splash_screen.dart';
 import './screens/login_screen.dart';
 
 import 'package:flutter/material.dart';
+import 'package:nested/nested.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -18,49 +19,41 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<AuthProvider>.value(value: AuthProvider()),
-        ChangeNotifierProxyProvider<AuthProvider, UserProvider>(
-          create: (_) => UserProvider(),
-          update: (context, auth, previous) =>
-              UserProvider(token: auth.token, users: previous.users),
-        )
-      ],
+      providers: providers,
       child: Consumer<AuthProvider>(
         builder: (context, auth, _) => MaterialApp(
-            title: 'Flutter Demo',
-            themeMode: ThemeMode.dark,
-            theme: ThemeData(),
-            darkTheme: darkTheme(),
-            home: auth.loggedIn
-                ? HomeScreen()
-                : FutureBuilder(
-                    future: auth.tryAutoLogin(),
-                    builder: (context, snapshot) =>
-                        snapshot.connectionState == ConnectionState.waiting
-                            ? SplashScreen()
-                            : LoginScreen(),
-                  ),
-            onGenerateRoute: (settings) {
-              switch (settings.name) {
-                case HomeScreen.routeName:
-                  return MaterialPageRoute(builder: (_) => HomeScreen());
-                case UsersScreen.routeName:
-                  return MaterialPageRoute(builder: (_) => UsersScreen());
-                case SplashScreen.routeName:
-                  return MaterialPageRoute(builder: (_) => SplashScreen());
-                default:
-                  return MaterialPageRoute(builder: (_) => LoginScreen());
-              }
-            }),
+          title: 'Auth Starter',
+          themeMode: ThemeMode.dark,
+          theme: ThemeData(),
+          darkTheme: darkTheme(),
+          home: home(auth),
+          onGenerateRoute: routes,
+          onUnknownRoute: (settings) =>
+              MaterialPageRoute(builder: (_) => LoginScreen()),
+        ),
       ),
     );
   }
 
+  /// Evaluate if the user is authenticated
+  /// then show the user the HomeScreen otherwise
+  /// display the LoginScreen to force them to login
+  Widget home(AuthProvider auth) {
+    return auth.loggedIn
+        ? HomeScreen()
+        : FutureBuilder(
+            future: auth.tryAutoLogin(),
+            builder: (context, snapshot) =>
+                snapshot.connectionState == ConnectionState.waiting
+                    ? SplashScreen()
+                    : LoginScreen(),
+          );
+  }
+
+  /// Here we define our theme colors for dark mode
   ThemeData darkTheme() {
     return ThemeData(
       backgroundColor: Colors.grey[900],
@@ -75,5 +68,34 @@ class MyApp extends StatelessWidget {
           shape: RoundedRectangleBorder(
               borderRadius: new BorderRadius.circular(15.0))),
     );
+  }
+
+  /// Here we define our list of providers
+  /// for our state management in the app
+  List<SingleChildWidget> get providers {
+    return [
+      ChangeNotifierProvider<AuthProvider>.value(value: AuthProvider()),
+      ChangeNotifierProxyProvider<AuthProvider, UserProvider>(
+        create: (_) => UserProvider(),
+        update: (context, auth, previous) =>
+            UserProvider(token: auth.token, users: previous.users),
+      )
+    ];
+  }
+
+  /// All the routes are defined in here
+  /// in a switch statement since this will
+  /// be able to handle dynamic page requests.
+  Route routes(settings) {
+    switch (settings.name) {
+      case HomeScreen.routeName:
+        return MaterialPageRoute(builder: (_) => HomeScreen());
+      case UsersScreen.routeName:
+        return MaterialPageRoute(builder: (_) => UsersScreen());
+      case SplashScreen.routeName:
+        return MaterialPageRoute(builder: (_) => SplashScreen());
+      default:
+        return MaterialPageRoute(builder: (_) => LoginScreen());
+    }
   }
 }
