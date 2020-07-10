@@ -1,3 +1,9 @@
+// Packages
+import 'package:flutter/material.dart';
+import 'package:nested/nested.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+
 // Providers
 import './providers/auth_provider.dart';
 import './providers/user_provider.dart';
@@ -8,11 +14,7 @@ import './screens/user_detail_screen.dart';
 import './screens/users_screen.dart';
 import './screens/splash_screen.dart';
 import './screens/login_screen.dart';
-
-import 'package:flutter/material.dart';
-import 'package:nested/nested.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
+import './screens/unknown_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -47,7 +49,7 @@ class MyApp extends StatelessWidget {
             }
           },
           onUnknownRoute: (settings) =>
-              MaterialPageRoute(builder: (_) => LoginScreen()),
+              MaterialPageRoute(builder: (_) => UnknownScreen()),
         ),
       ),
     );
