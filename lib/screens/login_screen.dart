@@ -57,22 +57,24 @@ class LoginScreen extends StatelessWidget {
                 ),
                 Container(
                   height: 50,
-                  child: RaisedButton(
-                      child: Text('LOGIN'),
-                      onPressed: () async {
-                        if (_formKey.currentState.validate()) {
-                          Response response = await authProvider.login({
-                            "email": _emailController.text,
-                            "password": _passwordController.text
-                          });
+                  child: Builder(
+                    builder: (context) => RaisedButton(
+                        child: Text('LOGIN'),
+                        onPressed: () async {
+                          if (_formKey.currentState.validate()) {
+                            Response response = await authProvider.login({
+                              "email": _emailController.text,
+                              "password": _passwordController.text
+                            });
 
-                          if (response.statusCode == 200) {
-                            Scaffold.of(context).showSnackBar(SnackBar(
-                              content: Text('You have logged in!'),
-                            ));
+                            if (response.statusCode == 200) {
+                              Scaffold.of(context).showSnackBar(SnackBar(
+                                content: Text('You have logged in!'),
+                              ));
+                            }
                           }
-                        }
-                      }),
+                        }),
+                  ),
                 )
               ],
             ),
