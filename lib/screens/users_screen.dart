@@ -24,13 +24,8 @@ class UserListScreen extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-            onPressed: () => Navigator.of(context).pop(),
-            icon: Icon(Icons.chevron_left),
-            iconSize: 32,
-          ),
           title: Text(
-            'User Screen',
+            'User List',
           ),
           centerTitle: true,
         ),
@@ -39,7 +34,9 @@ class UserListScreen extends StatelessWidget {
                 padding: EdgeInsets.all(10),
                 child: ListView.builder(
                   itemBuilder: (context, index) => ListTile(
-                      leading: Image.network('https://i.pravatar.cc/300'),
+                      leading: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.network('https://i.pravatar.cc/300')),
                       title: Text(faker.person.name()),
                       subtitle: Text(faker.lorem.sentence()),
                       isThreeLine: true,
