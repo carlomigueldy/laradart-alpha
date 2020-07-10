@@ -37,6 +37,20 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
+                Center(
+                  child: Column(
+                    children: [
+                      Text('Sign In'),
+                      Text(
+                        'Space App Starter',
+                        style: TextStyle(fontSize: 26),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
                 SvgPicture.asset(
                   'assets/illustrations/relaunch_day.svg',
                   height: 250.0,
@@ -83,6 +97,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           setState(() {
                             _loading = false;
                           });
+
+                          print(response);
                         }
                       }),
                 )

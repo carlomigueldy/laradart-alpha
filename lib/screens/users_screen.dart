@@ -36,7 +36,8 @@ class UserListScreen extends StatelessWidget {
                   itemBuilder: (context, index) => ListTile(
                       leading: ClipRRect(
                           borderRadius: BorderRadius.circular(8),
-                          child: Image.network('https://i.pravatar.cc/300')),
+                          child: Image.network(
+                              'https://api.adorable.io/avatars/285/${faker.person.firstName()}')),
                       title: Text(faker.person.name()),
                       subtitle: Text(faker.lorem.sentence()),
                       isThreeLine: true,
