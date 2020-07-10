@@ -1,17 +1,17 @@
 // Providers
-import 'package:google_fonts/google_fonts.dart';
-
 import './providers/auth_provider.dart';
 import './providers/user_provider.dart';
 
 // Screens
 import './screens/home_screen.dart';
+import './screens/user_detail_screen.dart';
 import './screens/users_screen.dart';
 import './screens/splash_screen.dart';
 import './screens/login_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:nested/nested.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -30,7 +30,22 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(),
           darkTheme: darkTheme(),
           home: home(auth),
-          onGenerateRoute: routes,
+          onGenerateRoute: (settings) {
+            final arguments = settings.arguments;
+            switch (settings.name) {
+              case HomeScreen.routeName:
+                return MaterialPageRoute(builder: (_) => HomeScreen());
+              case UserListScreen.routeName:
+                return MaterialPageRoute(builder: (_) => UserListScreen());
+              case UserDetailScreen.routeName:
+                return MaterialPageRoute(
+                    builder: (_) => UserDetailScreen(arguments));
+              case SplashScreen.routeName:
+                return MaterialPageRoute(builder: (_) => SplashScreen());
+              default:
+                return MaterialPageRoute(builder: (_) => LoginScreen());
+            }
+          },
           onUnknownRoute: (settings) =>
               MaterialPageRoute(builder: (_) => LoginScreen()),
         ),
@@ -62,6 +77,14 @@ class MyApp extends StatelessWidget {
       fontFamily: GoogleFonts.poppins().fontFamily,
       brightness: Brightness.dark,
       appBarTheme: AppBarTheme(color: Colors.grey[850], elevation: 0),
+      snackBarTheme: SnackBarThemeData(
+          elevation: 10,
+          behavior: SnackBarBehavior.floating,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
+      cardTheme: CardTheme(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
       buttonTheme: ButtonThemeData(
           buttonColor: Colors.indigo[400],
           textTheme: ButtonTextTheme.primary,
@@ -86,16 +109,4 @@ class MyApp extends StatelessWidget {
   /// All the routes are defined in here
   /// in a switch statement since this will
   /// be able to handle dynamic page requests.
-  Route routes(settings) {
-    switch (settings.name) {
-      case HomeScreen.routeName:
-        return MaterialPageRoute(builder: (_) => HomeScreen());
-      case UsersScreen.routeName:
-        return MaterialPageRoute(builder: (_) => UsersScreen());
-      case SplashScreen.routeName:
-        return MaterialPageRoute(builder: (_) => SplashScreen());
-      default:
-        return MaterialPageRoute(builder: (_) => LoginScreen());
-    }
-  }
 }

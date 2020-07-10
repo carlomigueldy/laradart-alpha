@@ -74,7 +74,8 @@ class UserButton extends StatelessWidget {
     return Container(
       height: 50,
       child: RaisedButton(
-        onPressed: () => Navigator.of(context).pushNamed(UsersScreen.routeName),
+        onPressed: () =>
+            Navigator.of(context).pushNamed(UserListScreen.routeName),
         child: Text('To Users'),
       ),
     );

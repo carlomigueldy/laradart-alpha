@@ -1,9 +1,14 @@
+import 'package:daycare_flutter/config/config.dart';
+import 'package:daycare_flutter/screens/user_detail_screen.dart';
+import 'package:dio/dio.dart';
+import 'package:faker/faker.dart';
+
 import '../providers/auth_provider.dart';
 import '../providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class UsersScreen extends StatelessWidget {
+class UserListScreen extends StatelessWidget {
   static const routeName = '/users';
 
   @override
@@ -14,6 +19,8 @@ class UsersScreen extends StatelessWidget {
         Provider.of<UserProvider>(context, listen: false);
     final AuthProvider authProvider =
         Provider.of<AuthProvider>(context, listen: false);
+
+    final faker = Faker();
 
     return Scaffold(
         appBar: AppBar(
@@ -28,17 +35,26 @@ class UsersScreen extends StatelessWidget {
           centerTitle: true,
         ),
         body: SafeArea(
-          child: Center(
             child: Container(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text('Users Screen'),
-                Text(authProvider.fullName)
-              ],
-            )),
-          ),
-        ));
+                padding: EdgeInsets.all(10),
+                child: ListView.builder(
+                  itemBuilder: (context, index) => ListTile(
+                      leading: Image.network('https://i.pravatar.cc/300'),
+                      title: Text(faker.person.name()),
+                      subtitle: Text(faker.lorem.sentence()),
+                      isThreeLine: true,
+                      onTap: () => Navigator.pushNamed(
+                          context, UserDetailScreen.routeName,
+                          arguments: faker.person.name()),
+                      onLongPress: () =>
+                          Scaffold.of(context).showSnackBar(SnackBar(
+                            content: Text('Hello'),
+                            action: SnackBarAction(
+                              onPressed: () => print('Bye'),
+                              label: 'CLOSE',
+                            ),
+                          ))),
+                  itemCount: 10,
+                ))));
   }
 }
