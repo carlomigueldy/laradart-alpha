@@ -12,6 +12,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AuthProvider authProvider = Provider.of<AuthProvider>(context);
+    String unsplashPhoto =
+        'https://images.unsplash.com/photo-1594046243098-0fceea9d451e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80';
 
     return Scaffold(
         appBar: AppBar(
@@ -39,6 +41,36 @@ class HomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              Expanded(
+                  child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 15,
+                itemBuilder: (context, index) => GestureDetector(
+                  onDoubleTap: () => print('you double tapped me'),
+                  onLongPress: () => print('you long pressed me'),
+                  onTap: () => print('you tapped me'),
+                  onPanDown: (event) => print('you pan down me $event'),
+                  child: Card(
+                    child: Column(
+                      children: [
+                        ClipRRect(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(15),
+                                topRight: Radius.circular(15)),
+                            child: FittedBox(
+                              fit: BoxFit.cover,
+                              child: Image.network(
+                                unsplashPhoto,
+                                height: 300,
+                                width: 300,
+                              ),
+                            ))
+                      ],
+                    ),
+                  ),
+                ),
+              )),
+              SizedBox(height: 10),
               LogoutButton(authProvider: authProvider),
               SizedBox(
                 height: 10.0,

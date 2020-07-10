@@ -5,8 +5,15 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   static const routeName = '/login';
+
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  bool _loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -14,10 +21,12 @@ class LoginScreen extends StatelessWidget {
     final _emailController = TextEditingController(text: 'admin@admin.com');
     final _passwordController = TextEditingController(text: 'password');
     final _formKey = GlobalKey<FormState>();
+    final _scaffoldKey = GlobalKey<ScaffoldState>();
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
         resizeToAvoidBottomPadding: false,
+        key: _scaffoldKey,
         body: SafeArea(
             child: Padding(
           padding: EdgeInsets.all(10.0),
@@ -32,6 +41,7 @@ class LoginScreen extends StatelessWidget {
                   'assets/illustrations/relaunch_day.svg',
                   height: 250.0,
                 ),
+                Center(child: Text(_loading ? 'Logging you in...' : '')),
                 SizedBox(
                   height: 15,
                 ),
@@ -57,24 +67,24 @@ class LoginScreen extends StatelessWidget {
                 ),
                 Container(
                   height: 50,
-                  child: Builder(
-                    builder: (context) => RaisedButton(
-                        child: Text('LOGIN'),
-                        onPressed: () async {
-                          if (_formKey.currentState.validate()) {
-                            Response response = await authProvider.login({
-                              "email": _emailController.text,
-                              "password": _passwordController.text
-                            });
+                  child: RaisedButton(
+                      child: Text('LOGIN'),
+                      onPressed: () async {
+                        if (_formKey.currentState.validate()) {
+                          setState(() {
+                            _loading = true;
+                          });
 
-                            if (response.statusCode == 200) {
-                              Scaffold.of(context).showSnackBar(SnackBar(
-                                content: Text('You have logged in!'),
-                              ));
-                            }
-                          }
-                        }),
-                  ),
+                          Response response = await authProvider.login({
+                            "email": _emailController.text,
+                            "password": _passwordController.text
+                          });
+
+                          setState(() {
+                            _loading = false;
+                          });
+                        }
+                      }),
                 )
               ],
             ),
