@@ -45,11 +45,17 @@ class MyApp extends StatelessWidget {
                             ? SplashScreen()
                             : LoginScreen(),
                   ),
-            routes: {
-              HomeScreen.routeName: (context) => HomeScreen(),
-              UsersScreen.routeName: (context) => UsersScreen(),
-              SplashScreen.routeName: (context) => SplashScreen(),
-              LoginScreen.routeName: (context) => LoginScreen()
+            onGenerateRoute: (settings) {
+              switch (settings.name) {
+                case HomeScreen.routeName:
+                  return MaterialPageRoute(builder: (_) => HomeScreen());
+                case UsersScreen.routeName:
+                  return MaterialPageRoute(builder: (_) => UsersScreen());
+                case SplashScreen.routeName:
+                  return MaterialPageRoute(builder: (_) => SplashScreen());
+                default:
+                  return MaterialPageRoute(builder: (_) => LoginScreen());
+              }
             }),
       ),
     );
