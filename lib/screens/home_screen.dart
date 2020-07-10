@@ -16,6 +16,15 @@ class HomeScreen extends StatelessWidget {
         'https://images.unsplash.com/photo-1594046243098-0fceea9d451e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80';
 
     return Scaffold(
+        drawer: Drawer(
+          child: ListView.builder(
+            itemCount: 15,
+            itemBuilder: (context, index) => ListTile(
+              onTap: () => authProvider.logout(),
+              title: Text('Logout'),
+            ),
+          ),
+        ),
         appBar: AppBar(
           title: Text(
             'Home',
@@ -65,10 +74,6 @@ class DashboardWidget extends StatelessWidget {
           height: 10.0,
         ),
         sideScrollingList(),
-        SizedBox(
-          height: 10.0,
-        ),
-        LogoutButton(authProvider: authProvider),
         SizedBox(
           height: 10.0,
         ),
@@ -140,55 +145,6 @@ class UserButton extends StatelessWidget {
         onPressed: () =>
             Navigator.of(context).pushNamed(UserListScreen.routeName),
         child: Text('To Users'),
-      ),
-    );
-  }
-}
-
-class LogoutButton extends StatelessWidget {
-  const LogoutButton({
-    Key key,
-    @required this.authProvider,
-  }) : super(key: key);
-
-  final AuthProvider authProvider;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 50,
-      child: RaisedButton(
-        onPressed: () async {
-          Response response = await authProvider.logout();
-
-          switch (response.statusCode) {
-            case 403:
-              showDialog(
-                context: context,
-                builder: (_) => AlertDialog(
-                  title: Text('Error'),
-                  content: Text('Oops'),
-                  contentPadding: EdgeInsets.all(30),
-                  actions: <Widget>[
-                    FlatButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text('Close'),
-                    )
-                  ],
-                ),
-              );
-              break;
-            default:
-              Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text(response.data['message']),
-                action: SnackBarAction(
-                  label: 'Close',
-                  onPressed: () => print('Closed'),
-                ),
-              ));
-          }
-        },
-        child: Text('Logout'),
       ),
     );
   }

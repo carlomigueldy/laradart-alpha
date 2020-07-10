@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
       providers: providers,
       child: Consumer<AuthProvider>(
         builder: (context, auth, _) => MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Auth Starter',
           themeMode: ThemeMode.dark,
           theme: ThemeData(),
