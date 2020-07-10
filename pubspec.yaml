@@ -33,6 +33,7 @@ dependencies:
   shared_preferences: ^0.5.7+3
   flutter_svg: ^0.18.0
   google_fonts: ^1.1.0
+  faker: ^1.2.1
 
 dev_dependencies:
   flutter_test:
