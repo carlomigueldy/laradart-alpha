@@ -10,10 +10,13 @@ class UserDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     print(arguments);
     return Scaffold(
-      appBar: AppBar(title: Text('User Detail')),
+      appBar: AppBar(title: Text(arguments)),
       body: SafeArea(
         child: Center(
-          child: Text('User Detail Screen'),
+          child: Text(
+            'Hello there, $arguments!',
+            style: TextStyle(fontSize: 18),
+          ),
         ),
       ),
     );
