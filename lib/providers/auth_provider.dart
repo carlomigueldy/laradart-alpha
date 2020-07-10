@@ -38,6 +38,7 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<bool> tryAutoLogin() async {
+    print('Trying to auto loging...');
     final prefs = await SharedPreferences.getInstance();
 
     if (!prefs.containsKey('auth.token')) {
