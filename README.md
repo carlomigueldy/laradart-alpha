@@ -1,6 +1,6 @@
-# daycare_flutter
+# laradart
 
-A new Flutter project.
+A Flutter project with built-in authentication module using the Provider state management solution with Dio as the HTTP medium.
 
 ## Getting Started
 
