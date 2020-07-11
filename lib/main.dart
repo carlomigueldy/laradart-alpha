@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:laradart/providers/theme_provider.dart';
 import 'package:nested/nested.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 // Providers
@@ -30,37 +29,37 @@ class MyApp extends StatelessWidget {
       child: Consumer2<AuthProvider, ThemeProvider>(
         builder: (context, auth, themeProvider, _) => MaterialApp(
           // debugShowCheckedModeBanner: false,
-          title: 'Auth Starter',
+          title: 'LaraDart',
           themeMode: themeProvider.theme,
           theme: themeProvider.isDark
               ? themeProvider.darkTheme
               : themeProvider.lightTheme,
-          // darkTheme: darkTheme(),
           home: home(auth),
-          onGenerateRoute: (settings) {
-            final arguments = settings.arguments;
-            switch (settings.name) {
-              case HomeScreen.routeName:
-                return MaterialPageRoute(builder: (_) => HomeScreen());
-              case UserListScreen.routeName:
-                return MaterialPageRoute(builder: (_) => UserListScreen());
-              case PlaceScreen.routeName:
-                return MaterialPageRoute(
-                    builder: (_) => PlaceScreen(arguments));
-              case UserDetailScreen.routeName:
-                return MaterialPageRoute(
-                    builder: (_) => UserDetailScreen(arguments));
-              case SplashScreen.routeName:
-                return MaterialPageRoute(builder: (_) => SplashScreen());
-              default:
-                return MaterialPageRoute(builder: (_) => LoginScreen());
-            }
-          },
+          onGenerateRoute: routes,
           onUnknownRoute: (settings) =>
               MaterialPageRoute(builder: (_) => UnknownScreen()),
         ),
       ),
     );
+  }
+
+  /// All of the routes should be defined in here
+  Route routes(settings) {
+    final arguments = settings.arguments;
+    switch (settings.name) {
+      case HomeScreen.routeName:
+        return MaterialPageRoute(builder: (_) => HomeScreen());
+      case UserListScreen.routeName:
+        return MaterialPageRoute(builder: (_) => UserListScreen());
+      case PlaceScreen.routeName:
+        return MaterialPageRoute(builder: (_) => PlaceScreen(arguments));
+      case UserDetailScreen.routeName:
+        return MaterialPageRoute(builder: (_) => UserDetailScreen(arguments));
+      case SplashScreen.routeName:
+        return MaterialPageRoute(builder: (_) => SplashScreen());
+      default:
+        return MaterialPageRoute(builder: (_) => LoginScreen());
+    }
   }
 
   /// Evaluate if the user is authenticated
