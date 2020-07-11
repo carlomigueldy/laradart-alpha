@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:laradart/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -48,21 +49,45 @@ class _HomeScreenState extends State<HomeScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  IconButton(
-                    icon: Icon(Icons.access_alarm),
-                    onPressed: () => print('press'),
+                  HomeIconButton(
+                    message: 'Malls',
+                    iconButton: IconButton(
+                      icon: Icon(Icons.store_mall_directory),
+                      iconSize: 25,
+                      onPressed: () => print('press'),
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ),
-                  IconButton(
-                    icon: Icon(Icons.access_alarm),
-                    onPressed: () => print('press'),
+                  HomeIconButton(
+                    message: 'Events',
+                    iconButton: IconButton(
+                      icon: Icon(Icons.calendar_today),
+                      iconSize: 25,
+                      onPressed: () => print('press'),
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ),
-                  IconButton(
-                    icon: Icon(Icons.access_alarm),
-                    onPressed: () => print('press'),
+                  HomeIconButton(
+                    message: 'Flights',
+                    iconButton: IconButton(
+                      icon: Icon(Icons.airplanemode_active),
+                      iconSize: 25,
+                      onPressed: () => print('press'),
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ),
-                  IconButton(
-                    icon: Icon(Icons.adjust),
-                    onPressed: () => themeProvider.toggleTheme(),
+                  HomeIconButton(
+                    message: themeProvider.isLight
+                        ? 'Switch to dark theme'
+                        : 'Switch to light theme',
+                    iconButton: IconButton(
+                      icon: Icon(themeProvider.isLight
+                          ? Icons.brightness_3
+                          : Icons.brightness_high),
+                      iconSize: 25,
+                      onPressed: () => themeProvider.toggleTheme(),
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ),
                 ],
               ),
@@ -128,6 +153,30 @@ class _HomeScreenState extends State<HomeScreen> {
       title,
       style: TextStyle(
           fontSize: 20, fontWeight: FontWeight.w600, letterSpacing: 1),
+    );
+  }
+}
+
+class HomeIconButton extends StatelessWidget {
+  final IconButton iconButton;
+  final String message;
+
+  const HomeIconButton(
+      {Key key, @required this.iconButton, @required this.message})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: message,
+      child: Container(
+        height: 70,
+        width: 70,
+        decoration: BoxDecoration(
+            color: Theme.of(context).accentColor,
+            borderRadius: BorderRadius.circular(25)),
+        child: iconButton,
+      ),
     );
   }
 }
