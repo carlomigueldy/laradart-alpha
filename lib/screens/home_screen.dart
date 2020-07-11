@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:laradart/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
 
+// Providers
 import '../providers/auth_provider.dart';
+import '../providers/theme_provider.dart';
+
+// Widgets
 import '../widgets/image_carousel.dart';
 import '../widgets/food_name_carousel.dart';
 import '../widgets/expense_list.dart';
+
+// Screens
+import '../screens/users_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/home';
@@ -35,62 +40,46 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-        // appBar: AppBar(
-        //   centerTitle: true,
-        //   backgroundColor: !darkModeOn ? Colors.grey[50] : null,
-        // ),
-        // backgroundColor: Colors.white,
+        floatingActionButton: FloatingActionButton(
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+          onPressed: () {},
+          backgroundColor: Theme.of(context).primaryColor,
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: bottomNavigationBar,
         body: SafeArea(
             child: Padding(
           padding: EdgeInsets.all(10.0),
           child: ListView(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  HomeIconButton(
-                    message: 'Malls',
-                    iconButton: IconButton(
-                      icon: Icon(Icons.store_mall_directory),
-                      iconSize: 25,
-                      onPressed: () => print('press'),
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                  HomeIconButton(
-                    message: 'Events',
-                    iconButton: IconButton(
-                      icon: Icon(Icons.calendar_today),
-                      iconSize: 25,
-                      onPressed: () => print('press'),
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                  HomeIconButton(
-                    message: 'Flights',
-                    iconButton: IconButton(
-                      icon: Icon(Icons.airplanemode_active),
-                      iconSize: 25,
-                      onPressed: () => print('press'),
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                  HomeIconButton(
-                    message: themeProvider.isLight
-                        ? 'Switch to dark theme'
-                        : 'Switch to light theme',
-                    iconButton: IconButton(
-                      icon: Icon(themeProvider.isLight
-                          ? Icons.brightness_3
-                          : Icons.brightness_high),
-                      iconSize: 25,
-                      onPressed: () => themeProvider.toggleTheme(),
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                ],
+              Padding(
+                padding: EdgeInsets.only(
+                  top: 10,
+                ),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Hello there,', style: TextStyle(fontSize: 16)),
+                          Text('Carlo Miguel Dy',
+                              style: TextStyle(fontSize: 20))
+                        ],
+                      ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(Icons.settings),
+                      )
+                    ]),
               ),
+              SizedBox(
+                height: 10,
+              ),
+              DashboardNavigationButtonRow(themeProvider: themeProvider),
               SizedBox(
                 height: 10,
               ),
@@ -130,6 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
       onTap: (index) {
         setState(() => _currentIndex = index);
       },
+      type: BottomNavigationBarType.fixed,
       currentIndex: _currentIndex,
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
@@ -137,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
           title: SizedBox.shrink(),
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.supervisor_account),
+          icon: SizedBox.shrink(),
           title: SizedBox.shrink(),
         ),
         BottomNavigationBarItem(
@@ -153,6 +143,65 @@ class _HomeScreenState extends State<HomeScreen> {
       title,
       style: TextStyle(
           fontSize: 20, fontWeight: FontWeight.w600, letterSpacing: 1),
+    );
+  }
+}
+
+class DashboardNavigationButtonRow extends StatelessWidget {
+  const DashboardNavigationButtonRow({
+    Key key,
+    @required this.themeProvider,
+  }) : super(key: key);
+
+  final ThemeProvider themeProvider;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        HomeIconButton(
+          message: 'Malls',
+          iconButton: IconButton(
+            icon: Icon(Icons.store_mall_directory),
+            iconSize: 25,
+            onPressed: () =>
+                Navigator.pushNamed(context, UserListScreen.routeName),
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+        HomeIconButton(
+          message: 'Events',
+          iconButton: IconButton(
+            icon: Icon(Icons.calendar_today),
+            iconSize: 25,
+            onPressed: () => print('press'),
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+        HomeIconButton(
+          message: 'Flights',
+          iconButton: IconButton(
+            icon: Icon(Icons.airplanemode_active),
+            iconSize: 25,
+            onPressed: () => print('press'),
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+        HomeIconButton(
+          message: themeProvider.isLight
+              ? 'Switch to dark theme'
+              : 'Switch to light theme',
+          iconButton: IconButton(
+            icon: Icon(themeProvider.isLight
+                ? Icons.brightness_3
+                : Icons.brightness_high),
+            iconSize: 25,
+            onPressed: () => themeProvider.toggleTheme(),
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+      ],
     );
   }
 }
