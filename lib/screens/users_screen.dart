@@ -1,3 +1,5 @@
+import 'package:transparent_image/transparent_image.dart';
+
 import '../screens/user_detail_screen.dart';
 import 'package:faker/faker.dart';
 
@@ -34,8 +36,10 @@ class UserListScreen extends StatelessWidget {
                   itemBuilder: (context, index) => ListTile(
                       leading: ClipRRect(
                           borderRadius: BorderRadius.circular(8),
-                          child: Image.network(
-                              'https://api.adorable.io/avatars/285/${faker.person.firstName()}')),
+                          child: FadeInImage.memoryNetwork(
+                              placeholder: kTransparentImage,
+                              image:
+                                  'https://api.adorable.io/avatars/285/${faker.person.firstName()}')),
                       title: Text(faker.person.name()),
                       subtitle: Text(faker.lorem.sentence()),
                       isThreeLine: true,
