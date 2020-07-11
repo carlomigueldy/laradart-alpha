@@ -1,6 +1,4 @@
-import 'package:daycare_flutter/config/config.dart';
-import 'package:daycare_flutter/screens/user_detail_screen.dart';
-import 'package:dio/dio.dart';
+import '../screens/user_detail_screen.dart';
 import 'package:faker/faker.dart';
 
 import '../providers/auth_provider.dart';

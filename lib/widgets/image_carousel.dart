@@ -1,4 +1,4 @@
-import 'package:daycare_flutter/screens/place_screen.dart';
+import '../screens/place_screen.dart';
 import 'package:flutter/material.dart';
 
 class ImageCarousel extends StatelessWidget {

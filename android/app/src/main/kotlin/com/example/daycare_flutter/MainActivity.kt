@@ -1,4 +1,4 @@
-package com.example.daycare_flutter
+package com.example.laradart
 
 import io.flutter.embedding.android.FlutterActivity
 

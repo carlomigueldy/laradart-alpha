@@ -1,5 +1,5 @@
-name: daycare_flutter
-description: A new Flutter project.
+name: laradart
+description: A Flutter project with built-in authentication module using the Provider state management solution with Dio as the HTTP medium.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.

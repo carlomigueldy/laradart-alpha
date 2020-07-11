@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
             builder: (context, snapshot) =>
                 snapshot.connectionState == ConnectionState.waiting
                     ? SplashScreen()
-                    : LoginScreen(),
+                    : HomeScreen(),
           );
   }
 
