@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       providers: providers,
       child: Consumer2<AuthProvider, ThemeProvider>(
         builder: (context, auth, themeProvider, _) => MaterialApp(
-          // debugShowCheckedModeBanner: false,
+          debugShowCheckedModeBanner: false,
           title: 'LaraDart',
           themeMode: themeProvider.theme,
           theme: themeProvider.isDark

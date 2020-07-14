@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 // Providers
 import '../providers/auth_provider.dart';
@@ -50,68 +51,62 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: bottomNavigationBar,
-        body: SafeArea(
-            child: Padding(
-          padding: EdgeInsets.all(10.0),
-          child: ListView(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                  top: 10,
-                ),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Hello there,', style: TextStyle(fontSize: 16)),
-                          Text('Carlo Miguel Dy',
-                              style: TextStyle(fontSize: 20))
-                        ],
-                      ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.settings),
-                      )
-                    ]),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              DashboardNavigationButtonRow(themeProvider: themeProvider),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [contentHeader('Places'), Text('See all')],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              ImageCarousel(),
-              SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [contentHeader('Foods'), Text('See all')],
-              ),
-              SizedBox(height: 10),
-              FoodNameCarousel(),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [contentHeader('Expenses'), Text('See all')],
-              ),
-              SizedBox(height: 10),
-              ExpenseList()
-            ],
+        body: ScreenTypeLayout.builder(
+          desktop: (context) => Center(
+            child: Text('Cool'),
           ),
-          // child: DashboardWidget(
-          //     unsplashPhoto: unsplashPhoto, authProvider: authProvider),
-        )));
+          mobile: (context) => SafeArea(
+            child: ListView(
+              children: [
+                HomeScreenHeader(),
+                SizedBox(
+                  height: 10,
+                ),
+                DashboardNavigationButtonRow(themeProvider: themeProvider),
+                SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [contentHeader('Places'), Text('See all')],
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                ImageCarousel(),
+                SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [contentHeader('Foods'), Text('See all')],
+                  ),
+                ),
+                SizedBox(height: 10),
+                FoodNameCarousel(),
+                SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [contentHeader('Expenses'), Text('See all')],
+                  ),
+                ),
+                SizedBox(height: 10),
+                ExpenseList()
+              ],
+            ),
+            // child: DashboardWidget(
+            //     unsplashPhoto: unsplashPhoto, authProvider: authProvider),
+          ),
+        ));
   }
 
   BottomNavigationBar get bottomNavigationBar {
@@ -143,6 +138,38 @@ class _HomeScreenState extends State<HomeScreen> {
       title,
       style: TextStyle(
           fontSize: 20, fontWeight: FontWeight.w600, letterSpacing: 1),
+    );
+  }
+}
+
+class HomeScreenHeader extends StatelessWidget {
+  const HomeScreenHeader({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        top: 10,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Hello there,', style: TextStyle(fontSize: 16)),
+              Text('Carlo Miguel Dy', style: TextStyle(fontSize: 20))
+            ],
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.settings),
+          )
+        ]),
+      ),
     );
   }
 }
