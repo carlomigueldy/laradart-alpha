@@ -37,8 +37,13 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Initialize shared prefs
+  Future<void> initSharedPreferences() async {
+    _prefs = await SharedPreferences.getInstance();
+  }
+
   Future<bool> tryAutoLogin() async {
-    print('Trying to auto loging...');
+    print('tryAutoLogin executed');
     final prefs = await SharedPreferences.getInstance();
 
     if (!prefs.containsKey('auth.token')) {
@@ -112,10 +117,5 @@ class AuthProvider with ChangeNotifier {
     _user = null;
     _prefs.remove('auth.token');
     notifyListeners();
-  }
-
-  /// Initialize shared prefs
-  Future<void> initSharedPreferences() async {
-    _prefs = await SharedPreferences.getInstance();
   }
 }

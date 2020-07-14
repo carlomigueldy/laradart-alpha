@@ -1,29 +1,29 @@
 // Packages
 import 'package:flutter/material.dart';
-import 'package:laradart/providers/theme_provider.dart';
 import 'package:nested/nested.dart';
 import 'package:provider/provider.dart';
+import './app/router.dart';
 
 // Providers
 import './providers/auth_provider.dart';
 import './providers/user_provider.dart';
+import './providers/theme_provider.dart';
 
 // Screens
-import './screens/place_screen.dart';
 import './screens/home_screen.dart';
-import './screens/user_detail_screen.dart';
-import './screens/users_screen.dart';
 import './screens/splash_screen.dart';
-import './screens/login_screen.dart';
 import './screens/unknown_screen.dart';
+import './screens/login_screen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(BaseApp());
 }
 
-class MyApp extends StatelessWidget {
+class BaseApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final router = Router();
+
     return MultiProvider(
       providers: providers,
       child: Consumer2<AuthProvider, ThemeProvider>(
@@ -35,31 +35,12 @@ class MyApp extends StatelessWidget {
               ? themeProvider.darkTheme
               : themeProvider.lightTheme,
           home: home(auth),
-          onGenerateRoute: routes,
+          onGenerateRoute: router.onGenerateRoute,
           onUnknownRoute: (settings) =>
               MaterialPageRoute(builder: (_) => UnknownScreen()),
         ),
       ),
     );
-  }
-
-  /// All of the routes should be defined in here
-  Route routes(settings) {
-    final arguments = settings.arguments;
-    switch (settings.name) {
-      case HomeScreen.routeName:
-        return MaterialPageRoute(builder: (_) => HomeScreen());
-      case UserListScreen.routeName:
-        return MaterialPageRoute(builder: (_) => UserListScreen());
-      case PlaceScreen.routeName:
-        return MaterialPageRoute(builder: (_) => PlaceScreen(arguments));
-      case UserDetailScreen.routeName:
-        return MaterialPageRoute(builder: (_) => UserDetailScreen(arguments));
-      case SplashScreen.routeName:
-        return MaterialPageRoute(builder: (_) => SplashScreen());
-      default:
-        return MaterialPageRoute(builder: (_) => LoginScreen());
-    }
   }
 
   /// Evaluate if the user is authenticated
@@ -73,8 +54,8 @@ class MyApp extends StatelessWidget {
             builder: (context, snapshot) =>
                 snapshot.connectionState == ConnectionState.waiting
                     ? SplashScreen()
-                    : HomeScreen(),
-            // : LoginScreen(),
+                    // : HomeScreen(),
+                    : LoginScreen(),
           );
   }
 
@@ -91,8 +72,4 @@ class MyApp extends StatelessWidget {
       )
     ];
   }
-
-  /// All the routes are defined in here
-  /// in a switch statement since this will
-  /// be able to handle dynamic page requests.
 }

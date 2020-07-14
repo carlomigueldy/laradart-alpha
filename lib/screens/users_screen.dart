@@ -38,8 +38,7 @@ class UserListScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8),
                           child: FadeInImage.memoryNetwork(
                               placeholder: kTransparentImage,
-                              image:
-                                  'https://api.adorable.io/avatars/285/${faker.person.firstName()}')),
+                              image: 'https://i.pravatar.cc/300')),
                       title: Text(faker.person.name()),
                       subtitle: Text(faker.lorem.sentence()),
                       isThreeLine: true,
