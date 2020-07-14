@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+// Providers
+import '../../../providers/auth_provider.dart';
 
 class HomeScreenHeader extends StatelessWidget {
   const HomeScreenHeader({
@@ -7,6 +11,8 @@ class HomeScreenHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AuthProvider authProvider = Provider.of<AuthProvider>(context);
+
     return Padding(
       padding: EdgeInsets.only(
         top: 10,
@@ -19,7 +25,7 @@ class HomeScreenHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Hello there,', style: TextStyle(fontSize: 16)),
-              Text('Carlo Miguel Dy', style: TextStyle(fontSize: 20))
+              Text(authProvider.fullName, style: TextStyle(fontSize: 20))
             ],
           ),
           IconButton(

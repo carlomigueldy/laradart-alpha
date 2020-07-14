@@ -28,7 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
     final AuthProvider authProvider = Provider.of<AuthProvider>(context);
     // final brightness = MediaQuery.of(context).platformBrightness;
     // bool darkModeOn = brightness == Brightness.dark;
-
+    // authProvider.fetchUser();
+    print('home screen rebuilt');
     return Scaffold(
         drawer: Drawer(
           child: ListView.builder(

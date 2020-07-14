@@ -97,8 +97,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           setState(() {
                             _loading = false;
                           });
-
-                          print(response);
                         }
                       }),
                 )

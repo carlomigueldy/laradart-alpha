@@ -18,7 +18,7 @@ class AuthProvider with ChangeNotifier {
 
   // Instantiate instances
   AuthProvider() {
-    initSharedPreferences();
+    initialize();
   }
 
   // State
@@ -38,8 +38,10 @@ class AuthProvider with ChangeNotifier {
   }
 
   /// Initialize shared prefs
-  Future<void> initSharedPreferences() async {
+  Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
+    _token = _prefs.getString('auth.token');
+    print('From initialize() $_token');
   }
 
   Future<bool> tryAutoLogin() async {
@@ -47,10 +49,13 @@ class AuthProvider with ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
 
     if (!prefs.containsKey('auth.token')) {
+      print('no token');
       return false;
     }
 
-    // fetchUser(token);
+    // await fetchUser(prefs.getString('auth.token'));
+    _token = prefs.getString('auth.token');
+
     return true;
   }
 
@@ -61,7 +66,7 @@ class AuthProvider with ChangeNotifier {
           data: credentials);
       String token = response.data['access_token'];
       setToken(token);
-      fetchUser(token);
+      fetchUser();
       return response;
     } on DioError catch (error) {
       print(error);
@@ -83,15 +88,16 @@ class AuthProvider with ChangeNotifier {
   }
 
   /// Fetch the authenticated user
-  Future fetchUser(String token) async {
+  Future fetchUser() async {
     try {
       Response response = await _dio.get('${Config.baseUrl}/api/auth/user',
-          options:
-              Options(headers: {"Authorization": "Bearer ${token ?? _token}"}));
+          options: Options(headers: {"Authorization": "Bearer $_token"}));
       setUser(response.data);
       return response;
     } on DioError catch (error) {
-      print(error.response);
+      print(error.response.statusMessage);
+      print('error fetchUser() with status code' +
+          error.response.statusCode.toString());
       return error.response;
     }
   }

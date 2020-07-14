@@ -27,14 +27,14 @@ class BaseApp extends StatelessWidget {
     return MultiProvider(
       providers: providers,
       child: Consumer2<AuthProvider, ThemeProvider>(
-        builder: (context, auth, themeProvider, _) => MaterialApp(
+        builder: (context, authProvider, themeProvider, _) => MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'LaraDart',
           themeMode: themeProvider.theme,
           theme: themeProvider.isDark
               ? themeProvider.darkTheme
               : themeProvider.lightTheme,
-          home: home(auth),
+          home: home(authProvider),
           onGenerateRoute: router.onGenerateRoute,
           onUnknownRoute: (settings) =>
               MaterialPageRoute(builder: (_) => UnknownScreen()),
@@ -51,12 +51,18 @@ class BaseApp extends StatelessWidget {
         ? HomeScreen()
         : FutureBuilder(
             future: auth.tryAutoLogin(),
-            builder: (context, snapshot) =>
-                snapshot.connectionState == ConnectionState.waiting
-                    ? SplashScreen()
-                    // : HomeScreen(),
-                    : LoginScreen(),
-          );
+            builder: (context, snapshot) {
+              print(snapshot.data);
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return SplashScreen();
+              }
+
+              if (snapshot.data) {
+                auth.fetchUser();
+                return HomeScreen();
+              }
+              return LoginScreen();
+            });
   }
 
   /// Here we define our list of providers
