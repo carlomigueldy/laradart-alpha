@@ -15,7 +15,12 @@ import './screens/splash_screen.dart';
 import './screens/unknown_screen.dart';
 import './screens/login_screen.dart';
 
+// App
+import './app/service_locator.dart';
+import './services/navigation_service.dart';
+
 void main() {
+  setupLocator();
   runApp(BaseApp());
 }
 
@@ -28,13 +33,14 @@ class BaseApp extends StatelessWidget {
       providers: providers,
       child: Consumer2<AuthProvider, ThemeProvider>(
         builder: (context, authProvider, themeProvider, _) => MaterialApp(
+          navigatorKey: locator<NavigationService>().navigatorKey,
           debugShowCheckedModeBanner: false,
           title: 'LaraDart',
           themeMode: themeProvider.theme,
           theme: themeProvider.isDark
               ? themeProvider.darkTheme
               : themeProvider.lightTheme,
-          home: home(authProvider),
+          home: SplashScreen(),
           onGenerateRoute: router.onGenerateRoute,
           onUnknownRoute: (settings) =>
               MaterialPageRoute(builder: (_) => UnknownScreen()),
@@ -47,21 +53,19 @@ class BaseApp extends StatelessWidget {
   /// then show the user the HomeScreen otherwise
   /// display the LoginScreen to force them to login
   Widget home(AuthProvider auth) {
-    return auth.loggedIn
-        ? HomeScreen()
-        : FutureBuilder(
-            future: auth.tryAutoLogin(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return SplashScreen();
-              }
+    return FutureBuilder(
+        future: auth.tryAutoLogin(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return SplashScreen();
+          }
 
-              if (snapshot.data) {
-                auth.fetchUser();
-                return HomeScreen();
-              }
-              return LoginScreen();
-            });
+          if (snapshot.data) {
+            auth.fetchUser();
+            return HomeScreen();
+          }
+          return LoginScreen();
+        });
   }
 
   /// Here we define our list of providers
