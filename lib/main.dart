@@ -52,7 +52,6 @@ class BaseApp extends StatelessWidget {
         : FutureBuilder(
             future: auth.tryAutoLogin(),
             builder: (context, snapshot) {
-              print(snapshot.data);
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return SplashScreen();
               }
