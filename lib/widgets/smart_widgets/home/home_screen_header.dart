@@ -4,6 +4,9 @@ import 'package:provider/provider.dart';
 // Providers
 import '../../../providers/auth_provider.dart';
 
+// Screens
+import '../../../screens/settings_screen.dart';
+
 class HomeScreenHeader extends StatelessWidget {
   const HomeScreenHeader({
     Key key,
@@ -29,7 +32,8 @@ class HomeScreenHeader extends StatelessWidget {
             ],
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () =>
+                Navigator.of(context).pushNamed(SettingsScreen.routeName),
             icon: Icon(Icons.settings),
           )
         ]),

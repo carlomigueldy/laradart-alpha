@@ -1,6 +1,7 @@
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:laradart/screens/home_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth_provider.dart';
@@ -89,10 +90,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             _loading = true;
                           });
 
-                          Response response = await authProvider.login({
+                          await authProvider.login({
                             "email": _emailController.text,
                             "password": _passwordController.text
                           });
+
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              HomeScreen.routeName, (route) => false);
                         }
                       }),
                 )

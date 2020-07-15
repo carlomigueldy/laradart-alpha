@@ -1,10 +1,10 @@
 import 'package:transparent_image/transparent_image.dart';
 
-import '../screens/user_detail_screen.dart';
+import '../users/user_detail_screen.dart';
 import 'package:faker/faker.dart';
 
-import '../providers/auth_provider.dart';
-import '../providers/user_provider.dart';
+import '../../providers/auth_provider.dart';
+import '../../providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

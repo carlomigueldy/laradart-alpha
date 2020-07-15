@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../../../providers/theme_provider.dart';
 
 // Screens
-import '../../../screens/users_screen.dart';
+import '../../../screens/users/user_list_screen.dart';
 
 class DashboardNavigationButtonRow extends StatelessWidget {
   const DashboardNavigationButtonRow({

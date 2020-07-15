@@ -54,7 +54,7 @@ class AuthProvider with ChangeNotifier {
     }
 
     await getToken();
-    await fetchUser();
+    // await fetchUser();
 
     return true;
   }
@@ -67,6 +67,7 @@ class AuthProvider with ChangeNotifier {
       String token = response.data['access_token'];
       await setToken(token);
       await fetchUser();
+      print('logged in');
       return response;
     } on DioError catch (error) {
       handleError(error);
@@ -77,11 +78,13 @@ class AuthProvider with ChangeNotifier {
   /// Logs out the user
   Future logout() async {
     try {
+      print('attempt logout');
       Response response = await _dio.get('${Config.baseUrl}/api/auth/logout',
           options: Options(headers: {
             "Authorization": "Bearer ${_token ?? await getToken()}"
           }));
-      deleteToken();
+      await deleteToken();
+      print('logout success');
       return response;
     } on DioError catch (error) {
       handleError(error);
@@ -129,6 +132,7 @@ class AuthProvider with ChangeNotifier {
     _token = "";
     _user = null;
     prefs.remove(_authToken);
+    print('token deleted');
     notifyListeners();
   }
 
