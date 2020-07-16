@@ -1,41 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:laradart/app/service_locator.dart';
-import 'package:laradart/providers/auth_provider.dart';
-import 'package:laradart/screens/home_screen.dart';
-import 'package:laradart/screens/login_screen.dart';
-import 'package:laradart/services/navigation_service.dart';
 import 'package:provider/provider.dart';
+import '../app/service_locator.dart';
+import '../providers/auth_provider.dart';
+import '../screens/home_screen.dart';
+import '../screens/login_screen.dart';
+import '../services/navigation_service.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends StatelessWidget {
   static const routeName = '/splash';
-
-  @override
-  _SplashScreenState createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    final AuthProvider authProvider = AuthProvider();
-
-    authProvider.tryAutoLogin().then((bool value) {
-      if (value) {
-        locator<NavigationService>().navigateTo(HomeScreen.routeName);
-      } else {
-        locator<NavigationService>().navigateTo(LoginScreen.routeName);
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
+        body: SafeArea(
+      child: Center(
+        child: CircularProgressIndicator(),
       ),
-    );
+    ));
   }
 }

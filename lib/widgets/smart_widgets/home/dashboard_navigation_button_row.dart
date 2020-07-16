@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:laradart/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 
 // Providers
@@ -8,9 +9,7 @@ import '../../../providers/theme_provider.dart';
 import '../../../screens/users/user_list_screen.dart';
 
 class DashboardNavigationButtonRow extends StatelessWidget {
-  const DashboardNavigationButtonRow({
-    Key key,
-  }) : super(key: key);
+  const DashboardNavigationButtonRow({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +42,7 @@ class DashboardNavigationButtonRow extends StatelessWidget {
           iconButton: IconButton(
             icon: Icon(Icons.airplanemode_active),
             iconSize: 25,
-            onPressed: () => print('press'),
+            onPressed: () => print('pressed flights'),
             color: Theme.of(context).primaryColor,
           ),
         ),

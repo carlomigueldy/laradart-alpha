@@ -1,14 +1,20 @@
-import '../config/config.dart';
+import 'package:laradart/screens/home_screen.dart';
+import 'package:laradart/screens/login_screen.dart';
+import 'package:laradart/services/navigation_service.dart';
+
+import '../app/config.dart';
 import '../models/user.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../app/service_locator.dart';
 
 class AuthProvider with ChangeNotifier {
   final String _authToken = 'auth.token';
 
   // Dependency Injections
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  NavigationService _navigationService;
   final Dio _dio = Dio(BaseOptions(
     baseUrl: Config.baseUrl,
     headers: {
@@ -20,6 +26,7 @@ class AuthProvider with ChangeNotifier {
 
   // Instantiate instances
   AuthProvider() {
+    _navigationService = locator<NavigationService>();
     initialize();
   }
 
@@ -53,8 +60,9 @@ class AuthProvider with ChangeNotifier {
       return false;
     }
 
-    await getToken();
-    // await fetchUser();
+    getToken();
+    fetchUser();
+    _navigationService.navigateTo(HomeScreen.routeName);
 
     return true;
   }
@@ -68,6 +76,7 @@ class AuthProvider with ChangeNotifier {
       await setToken(token);
       await fetchUser();
       print('logged in');
+      _navigationService.navigateTo(HomeScreen.routeName);
       return response;
     } on DioError catch (error) {
       handleError(error);
@@ -95,12 +104,16 @@ class AuthProvider with ChangeNotifier {
   /// Fetch the authenticated user
   Future fetchUser() async {
     try {
+      SharedPreferences prefs = await _prefs;
+      String token = prefs.getString('auth.token');
       print('executed fetchUser()');
+      print(token);
       Response response = await _dio.get('${Config.baseUrl}/api/auth/user',
-          options: Options(headers: {"Authorization": "Bearer $_token"}));
+          options: Options(headers: {"Authorization": "Bearer $token"}));
       setUser(response.data);
       return response;
     } on DioError catch (error) {
+      print(error.response.statusMessage);
       handleError(error);
       return error.response;
     }
@@ -142,9 +155,11 @@ class AuthProvider with ChangeNotifier {
     switch (error.response.statusCode) {
       case 403:
         deleteToken();
+        _navigationService.navigateTo(LoginScreen.routeName);
         break;
       case 401:
         deleteToken();
+        _navigationService.navigateTo(LoginScreen.routeName);
         break;
       default:
         print('An unknown error has occurred, $error');

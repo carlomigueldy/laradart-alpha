@@ -40,7 +40,7 @@ class BaseApp extends StatelessWidget {
           theme: themeProvider.isDark
               ? themeProvider.darkTheme
               : themeProvider.lightTheme,
-          home: SplashScreen(),
+          home: home(authProvider),
           onGenerateRoute: router.onGenerateRoute,
           onUnknownRoute: (settings) =>
               MaterialPageRoute(builder: (_) => UnknownScreen()),
@@ -53,19 +53,21 @@ class BaseApp extends StatelessWidget {
   /// then show the user the HomeScreen otherwise
   /// display the LoginScreen to force them to login
   Widget home(AuthProvider auth) {
-    return FutureBuilder(
-        future: auth.tryAutoLogin(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return SplashScreen();
-          }
-
-          if (snapshot.data) {
-            auth.fetchUser();
-            return HomeScreen();
-          }
-          return LoginScreen();
-        });
+    return auth.loggedIn
+        ? HomeScreen()
+        : FutureBuilder(
+            future: auth.tryAutoLogin(),
+            builder: (context, snapshot) {
+              print('future builder fired');
+              switch (snapshot.connectionState) {
+                case ConnectionState.done:
+                  return snapshot.data ? HomeScreen() : LoginScreen();
+                case ConnectionState.waiting:
+                  return SplashScreen();
+                default:
+                  return SplashScreen();
+              }
+            });
   }
 
   /// Here we define our list of providers

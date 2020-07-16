@@ -23,6 +23,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
 
+  void initState() {
+    super.initState();
+    // final AuthProvider authProvider = AuthProvider();
+
+    // authProvider.fetchUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     final AuthProvider authProvider = Provider.of<AuthProvider>(context);
@@ -30,6 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // bool darkModeOn = brightness == Brightness.dark;
     // authProvider.fetchUser();
     print('home screen rebuilt');
+    print(authProvider.token.isNotEmpty ? 'has token' : 'no token');
     return Scaffold(
         drawer: Drawer(
           child: ListView.builder(
