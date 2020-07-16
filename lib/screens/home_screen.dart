@@ -36,8 +36,8 @@ class _HomeScreenState extends State<HomeScreen> {
     // final brightness = MediaQuery.of(context).platformBrightness;
     // bool darkModeOn = brightness == Brightness.dark;
     // authProvider.fetchUser();
-    print('home screen rebuilt');
-    print(authProvider.token.isNotEmpty ? 'has token' : 'no token');
+    print('home screen rebuilt ' +
+        (authProvider.token.isNotEmpty ? 'has token' : 'no token'));
     return Scaffold(
         drawer: Drawer(
           child: ListView.builder(
@@ -65,12 +65,12 @@ class _HomeScreenState extends State<HomeScreen> {
           mobile: (context) => SafeArea(
             child: ListView(
               children: [
-                HomeScreenHeader(),
-                SizedBox(
+                const HomeScreenHeader(),
+                const SizedBox(
                   height: 10,
                 ),
-                DashboardNavigationButtonRow(),
-                SizedBox(
+                const DashboardNavigationButtonRow(),
+                const SizedBox(
                   height: 10,
                 ),
                 Padding(
@@ -82,11 +82,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [contentHeader('Places'), Text('See all')],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 ImageCarousel(),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Row(
@@ -94,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [contentHeader('Foods'), Text('See all')],
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 FoodNameCarousel(),
                 SizedBox(
                   height: 10,

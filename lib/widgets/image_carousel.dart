@@ -25,8 +25,9 @@ class ImageCarousel extends StatelessWidget {
           child: Container(
             width: 100,
             margin: EdgeInsets.symmetric(horizontal: 5),
-            decoration:
-                BoxDecoration(borderRadius: BorderRadius.circular(10.0)),
+            decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(10.0)),
             child: Hero(
               tag: places[index],
               child: ClipRRect(

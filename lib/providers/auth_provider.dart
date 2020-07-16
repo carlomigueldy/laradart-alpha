@@ -27,7 +27,6 @@ class AuthProvider with ChangeNotifier {
   // Instantiate instances
   AuthProvider() {
     _navigationService = locator<NavigationService>();
-    initialize();
   }
 
   // State
@@ -44,11 +43,6 @@ class AuthProvider with ChangeNotifier {
   void setUser(Map<String, dynamic> user) {
     _user = User.fromJson(user);
     notifyListeners();
-  }
-
-  /// Initialize shared prefs
-  Future<void> initialize() async {
-    await getToken();
   }
 
   Future<bool> tryAutoLogin() async {
@@ -106,14 +100,13 @@ class AuthProvider with ChangeNotifier {
     try {
       SharedPreferences prefs = await _prefs;
       String token = prefs.getString('auth.token');
-      print('executed fetchUser()');
-      print(token);
+      print('executed fetchUser() ' +
+          (token.isNotEmpty ? 'has token' : 'no token'));
       Response response = await _dio.get('${Config.baseUrl}/api/auth/user',
           options: Options(headers: {"Authorization": "Bearer $token"}));
       setUser(response.data);
       return response;
     } on DioError catch (error) {
-      print(error.response.statusMessage);
       handleError(error);
       return error.response;
     }
@@ -162,6 +155,7 @@ class AuthProvider with ChangeNotifier {
         _navigationService.navigateTo(LoginScreen.routeName);
         break;
       default:
+        print('The response error message is ${error.response.statusMessage}');
         print('An unknown error has occurred, $error');
     }
   }
